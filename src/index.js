@@ -62,11 +62,8 @@ io.of("/console-communication").on("connection", (socket) => {
 		// save it as global variable
 		microphone_stream = _microphone_stream;
 
-		microphone_stream.on('data', (data) => {
-			// console.log('got data!');
-		});
-
-		callback({});	// acknowledgement
+		// acknowledgement
+		callback({});
 
 		socket.on('buffer', (buffer) => {
 			microphone_stream.push(buffer);
@@ -83,15 +80,24 @@ io.of("/console-communication").on("connection", (socket) => {
 
 				// TODO: this will be selected using the playlist in the future
 				file1 = fs.createReadStream(__dirname + '/song1.wav');
+				// -----------------------------------------------------------------------------------
 				// TODO: fix for render.com! A good fix would be to stop using wav and switch to mp3!
+				//			Maybe use https://github.com/mattdiamond/Recorderjs ???
+				// ----------------------------------------------------------------------------------- 		
 				// file1 = ss.createStream();
+				// file2 = fs.createReadStream(__dirname + '/song2.wav');
 
 				// create our mixer class & get output stream
 				radio_mixer = new RadioMixer(microphone_stream, file1);
 				// radio_mixer = new RadioMixer(microphone_stream, ss.createStream());
+				// radio_mixer = new RadioMixer(file1, file2);
 
 				// get mixedStream
 				mixedStream = radio_mixer.outputStream();
+
+				// Test4:
+				// mixedStream = ss.createStream();
+				// microphone_stream.pipe(mixedStream);
 
 				// send the output stream (mixed stream) to all clients that are asking for it!
 				ss(socket).emit('server-sends-mixed-stream', mixedStream);
