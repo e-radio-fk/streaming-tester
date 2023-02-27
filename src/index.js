@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
 	res.sendFile('index.html');
 });
 
+app.get('/client', (req, res) => {
+	res.sendFile('/client/index.html');
+});
+
 console.log('[1] Enabling stream.io...');
 
 io.of("/console-communication").on("connection", (socket) => {
