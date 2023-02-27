@@ -75,9 +75,11 @@ io.of("/console-communication").on("connection", (socket) => {
 		// now we can start communications with clients!
 		io.of("/clients-communication").on("connection", (socket) => {
 
-			console.log('[3] Connection with client');
+			console.log('[3] Connection with client ', socket.id);
 
 			socket.on('client-requests-mixed-stream', () => {
+
+				console.log('[3.1] Client ', socket.id, ' requests mixed_stream');
 
 				// TODO: this will be selected using the playlist in the future
 				file1 = fs.createReadStream(__dirname + '/song1.wav');
@@ -90,8 +92,6 @@ io.of("/console-communication").on("connection", (socket) => {
 
 				// get mixedStream
 				mixedStream = radio_mixer.outputStream();
-
-				console.log('[3] Client requests mixed_stream');
 
 				// send the output stream (mixed stream) to all clients that are asking for it!
 				ss(socket).emit('server-sends-mixed-stream', mixedStream);
