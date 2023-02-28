@@ -14320,6 +14320,10 @@ try {
     withCredentials: true
   });
   var mixed_stream;
+  socket.on('server-sends-not-ready-yet', function () {
+    alert('Server is not ready! Please retry in a fair bit!');
+    throw new Error("server not ready!");
+  });
 
   // add handler for getting mixed-stream
   (0, _socket2["default"])(socket).on('server-sends-mixed-stream', function (_mixed_stream) {

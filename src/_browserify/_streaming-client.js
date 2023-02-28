@@ -16,6 +16,11 @@ try
 
     var mixed_stream;
     
+    socket.on('server-sends-not-ready-yet', () => {
+        alert('Server is not ready! Please retry in a fair bit!');
+        throw new Error("server not ready!");
+    });
+
     // add handler for getting mixed-stream
     ss(socket).on('server-sends-mixed-stream', (_mixed_stream) => {
 
